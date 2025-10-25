@@ -4,3 +4,5 @@ uvicorn
 python-dotenv
 bcrypt
 jwt
+pydantic
+pydantic[email]
