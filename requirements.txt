@@ -1,0 +1,6 @@
+prisma 
+fastapi
+uvicorn
+python-dotenv
+bcrypt
+jwt
