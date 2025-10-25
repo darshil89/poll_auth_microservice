@@ -3,6 +3,7 @@ fastapi
 uvicorn
 python-dotenv
 bcrypt
-jwt
+PyJWT
 pydantic
 pydantic[email]
+python-multipart

@@ -1,16 +1,14 @@
-from models.user import User
-from helpers.db import check_db_connection
 from helpers.jwt_auth import create_token_response
 from prisma import Prisma
-import os
 from dotenv import load_dotenv
 import bcrypt
 from fastapi import HTTPException, status
+
 # Load environment variables
 load_dotenv()
 
-async def signup(user: User):
-    print(f"Signup attempt for user: {user.email}")
+async def signin(email: str, password: str):
+    print(f"Signin attempt for user: {email}")
     
     prisma = Prisma()
     try:
@@ -18,33 +16,31 @@ async def signup(user: User):
         await prisma.connect()
         print("Database connected successfully")
         
-        # Check if user already exists
-        existing_user = await prisma.user.find_unique(
-            where={"email": user.email}
+        # Find user by email
+        user = await prisma.user.find_unique(
+            where={"email": email}
         )
         
-        if existing_user:
+        if not user:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="User with this email already exists"
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
             )
-
-        hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-        created_user = await prisma.user.create(
-            data={
-                "email": user.email,
-                "name": user.name,
-                "password": hashed_password,
-            }
-        )
+        
+        # Verify password
+        if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
         
         # Create and return token response
         return create_token_response(
-            user_id=str(created_user.id),
-            email=created_user.email,
-            name=created_user.name
+            user_id=str(user.id),
+            email=user.email,
+            name=user.name
         )
+        
     except HTTPException:
         raise
     except Exception as e:
