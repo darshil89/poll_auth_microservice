@@ -1,25 +1,21 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "main.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "main.py"
-    }
-  ],
-  "env": {
-    "PYTHONPATH": "$PYTHONPATH:."
-  },
-  "functions": {
-    "main.py": {
-      "maxDuration": 30
-    }
-  },
-  "regions": ["iad1"],
-  "framework": "fastapi"
-}
+    "version": 2,
+    "builds": [
+      {
+        "src": "main.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "main.py"
+      }
+    ],
+    "env": {
+      "PYTHONPATH": "$PYTHONPATH:."
+    },
+    "regions": ["iad1"],
+    "framework": "fastapi"
+  }
+  
