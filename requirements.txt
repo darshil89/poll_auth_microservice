@@ -7,4 +7,3 @@ pydantic
 pydantic[email]
 python-multipart
 prisma
-prisma-client-py
