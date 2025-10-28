@@ -6,6 +6,7 @@
         "use": "@vercel/python"
       }
     ],
+    "buildCommand": "pip install prisma && npx prisma generate",
     "routes": [
       {
         "src": "/(.*)",
